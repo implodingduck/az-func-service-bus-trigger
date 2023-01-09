@@ -166,17 +166,17 @@ EOT
   filename = "../func/local.settings.json"
 }
 
-# resource "null_resource" "publish_func" {
-#   depends_on = [
-#     azurerm_linux_function_app.func,
-#     local_file.localsettings
-#   ]
-#   triggers = {
-#     index = "${timestamp()}"
-#   }
-#   provisioner "local-exec" {
-#     working_dir = "../func"
-#     command     = "sleep 10 && timeout 10m func azure functionapp publish ${azurerm_linux_function_app.func.name} --build remote"
+resource "null_resource" "publish_func" {
+  depends_on = [
+    azurerm_linux_function_app.func,
+    local_file.localsettings
+  ]
+  triggers = {
+    index = "${timestamp()}"
+  }
+  provisioner "local-exec" {
+    working_dir = "../func"
+    command     = "sleep 10 && timeout 10m func azure functionapp publish ${azurerm_linux_function_app.func.name} --build remote"
 
-#   }
-# }
+  }
+}
