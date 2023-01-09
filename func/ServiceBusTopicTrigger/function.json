@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "mySbMsg",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "topicName": "funcservicebustopic",
+      "subscriptionName": "subfuncservicebustopic",
+      "connection": "SERVICE_BUS_NAMESPACE"
+    }
+  ]
+}

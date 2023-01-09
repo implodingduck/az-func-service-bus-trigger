@@ -1,9 +1,9 @@
 const { ServiceBusClient } = require("@azure/service-bus");
 const { DefaultAzureCredential } = require("@azure/identity");
 
-const fullyQualifiedNamespace = process.env.SERVICE_BUS_NAMESPACE+".servicebus.windows.net";
+const fullyQualifiedNamespace = process.env.SERVICE_BUS_NAMESPACE__fullyQualifiedNamespace;
 const credential = new DefaultAzureCredential();
-const topicName = process.env.TOPIC_NAME
+const topicName = process.env.TOPIC_NAME;
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');

@@ -69,12 +69,12 @@ resource "azurerm_servicebus_namespace" "sbn" {
 }
 
 resource "azurerm_servicebus_topic" "topic" {
-  name         = "topic-${local.gh_repo}-${random_string.unique.result}"
+  name         = "funcservicebustopic"
   namespace_id = azurerm_servicebus_namespace.sbn.id
 }
 
 resource "azurerm_servicebus_subscription" "sub" {
-  name               = "sub-${local.gh_repo}-${random_string.unique.result}"
+  name               = "subfuncservicebustopic"
   topic_id           = azurerm_servicebus_topic.topic.id
   max_delivery_count = 1
 }
@@ -141,14 +141,14 @@ resource "azurerm_linux_function_app" "func" {
   }
 
   app_settings = {
-    "SCM_DO_BUILD_DURING_DEPLOYMENT" = "1"
-    "BUILD_FLAGS"                    = "UseExpressBuild"
-    "ENABLE_ORYX_BUILD"              = "true"
-    "XDG_CACHE_HOME"                 = "/tmp/.cache"
-    "FUNC_TYPE"                      = "USELOCAL"
-    "SERVICE_BUS_NAMESPACE"          = "sbn-${local.gh_repo}-${random_string.unique.result}"
-    "TOPIC_NAME"                     = "topic-${local.gh_repo}-${random_string.unique.result}"
-    "EVENT_HUB_NAMESPACE"            = "eh-${local.gh_repo}-${random_string.unique.result}"
+    "SCM_DO_BUILD_DURING_DEPLOYMENT"                 = "1"
+    "BUILD_FLAGS"                                    = "UseExpressBuild"
+    "ENABLE_ORYX_BUILD"                              = "true"
+    "XDG_CACHE_HOME"                                 = "/tmp/.cache"
+    "FUNC_TYPE"                                      = "USELOCAL"
+    "SERVICE_BUS_NAMESPACE__fullyQualifiedNamespace" = "sbn-${local.gh_repo}-${random_string.unique.result}.servicebus.windows.net"
+    "TOPIC_NAME"                                     = "funcservicebustopic"
+    "EVENT_HUB_NAMESPACE__fullyQualifiedNamespace"   = "eh-${local.gh_repo}-${random_string.unique.result}.servicebus.windows.net"
   }
   identity {
     type = "SystemAssigned"
