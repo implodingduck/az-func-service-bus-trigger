@@ -153,18 +153,18 @@ resource "azurerm_service_plan" "asp" {
 #   }
 # }
 
-# resource "local_file" "localsettings" {
-#   content  = <<-EOT
-# {
-#   "IsEncrypted": false,
-#   "Values": {
-#     "FUNCTIONS_WORKER_RUNTIME": "node",
-#     "AzureWebJobsStorage": ""
-#   }
-# }
-# EOT
-#   filename = "../func/local.settings.json"
-# }
+resource "local_file" "localsettings" {
+  content  = <<-EOT
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": ""
+  }
+}
+EOT
+  filename = "../func/local.settings.json"
+}
 
 # resource "null_resource" "publish_func" {
 #   depends_on = [
