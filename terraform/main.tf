@@ -154,13 +154,13 @@ resource "azurerm_linux_function_app" "func" {
   }
 }
 
-resource "azurerm_role_assignment" {
+resource "azurerm_role_assignment" "asbdo" {
   role_definition_name = "Azure Service Bus Data Owner"
   scope = azurerm_resource_group.rg.id
   principal_id = azurerm_linux_function_app.func.identity.0.principal_id
 }
 
-resource "azurerm_role_assignment" {
+resource "azurerm_role_assignment" "aehdo" {
   role_definition_name = "Azure Event Hubs Data Owner"
   scope = azurerm_resource_group.rg.id
   principal_id = azurerm_linux_function_app.func.identity.0.principal_id
