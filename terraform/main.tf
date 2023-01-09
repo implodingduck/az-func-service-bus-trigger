@@ -146,7 +146,7 @@ resource "azurerm_linux_function_app" "func" {
     "ENABLE_ORYX_BUILD"              = "true"
     "XDG_CACHE_HOME"                 = "/tmp/.cache"
     "FUNC_TYPE"                      = "USELOCAL"
-    "SERVICE_BUS_NAMESPACE"          =  "ehn-${local.gh_repo}-${random_string.unique.result}"
+    "SERVICE_BUS_NAMESPACE"          =  "sbn-${local.gh_repo}-${random_string.unique.result}"
     "EVENT_HUB_NAMESPACE"            =  "eh-${local.gh_repo}-${random_string.unique.result}"
   }
   identity {
