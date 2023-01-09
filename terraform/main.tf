@@ -58,3 +58,41 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
   tags = local.tags
 }
+
+resource "azurerm_servicebus_namespace" "sbn" {
+  name                = "sb-${local.gh_repo}-${random_string.unique.result}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "Standard"
+
+  tags = local.tags
+}
+
+resource "azurerm_servicebus_topic" "topic" {
+  name         = "topic-${local.gh_repo}-${random_string.unique.result}"
+  namespace_id = azurerm_servicebus_namespace.sbn.id
+}
+
+resource "azurerm_servicebus_subscription" "sub" {
+  name               = "sub-${local.gh_repo}-${random_string.unique.result}"
+  topic_id           = azurerm_servicebus_topic.topic.id
+  max_delivery_count = 1
+}
+
+resource "azurerm_eventhub_namespace" "ehn" {
+  name                = "ehn-${local.gh_repo}-${random_string.unique.result}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "Standard"
+  capacity            = 1
+
+  tags = local.tags
+}
+
+resource "azurerm_eventhub" "eh" {
+  name                = "eh-${local.gh_repo}-${random_string.unique.result}"
+  namespace_name      = azurerm_eventhub_namespace.ehn.name
+  resource_group_name = azurerm_resource_group.rg.name
+  partition_count     = 2
+  message_retention   = 1
+}
