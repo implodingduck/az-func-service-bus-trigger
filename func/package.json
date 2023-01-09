@@ -2,8 +2,13 @@
   "name": "",
   "version": "",
   "description": "",
-  "scripts" : {
+  "scripts": {
     "test": "echo \"No tests yet...\""
   },
-  "author": ""
+  "author": "",
+  "dependencies": {
+    "@azure/event-hubs": "^5.8.0",
+    "@azure/identity": "^3.1.2",
+    "@azure/service-bus": "^7.7.3"
+  }
 }

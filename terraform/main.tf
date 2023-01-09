@@ -146,11 +146,24 @@ resource "azurerm_linux_function_app" "func" {
     "ENABLE_ORYX_BUILD"              = "true"
     "XDG_CACHE_HOME"                 = "/tmp/.cache"
     "FUNC_TYPE"                      = "USELOCAL"
-
+    "SERVICE_BUS_NAMESPACE"          =  azurerm_servicebus_namespace.sbn.name
+    "EVENT_HUB_NAMESPACE"            =  azurerm_eventhub_namespace.ehn.name
   }
   identity {
     type = "SystemAssigned"
   }
+}
+
+resource "azurerm_role_assignment" {
+  role_definition_name = "Azure Service Bus Data Owner"
+  scope = azurerm_resource_group.rg.id
+  principal_id = azurerm_linux_function_app.func.identity.0.principal_id
+}
+
+resource "azurerm_role_assignment" {
+  role_definition_name = "Azure Event Hubs Data Owner"
+  scope = azurerm_resource_group.rg.id
+  principal_id = azurerm_linux_function_app.func.identity.0.principal_id
 }
 
 resource "local_file" "localsettings" {
