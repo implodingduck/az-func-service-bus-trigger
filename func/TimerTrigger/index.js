@@ -22,12 +22,15 @@ module.exports = async function (context, myTimer) {
     //Configure service bus and event hub clients  
     const sbClient = new ServiceBusClient(fullyQualifiedNamespace, credential);
     const producer = new EventHubProducerClient(ehFullyQualifiedNamespace, eventHubName, credential);
+    context.log('Clients created');
 
     //service bus client to receive messages
     const receiver = sbClient.createReceiver(topicName, "subfuncservicebustopic");
-
+    context.log('sb receiver created');
+    
     //event hub client to produce messages
     const batch = await producer.createBatch();
+    context.log('eh batch producer created');
 
     //message handler for incoming service bus events
     const myMessageHandler = async (messageReceived) => {
@@ -45,13 +48,16 @@ module.exports = async function (context, myTimer) {
 		processMessage: myMessageHandler,
 		processError: myErrorHandler
 	});
+    context.log("sb subscribe defined")
 
+    context.log("waiting 5000ms...")
 	// Waiting to get messages
 	await delay(5000);
 
+    context.log(`Batch count... ${batch.count}`)
     //if we added messages send them to event hub
     if (batch.count > 0){
-        context.log('Sending Batch...');
+        context.log("Sending Batch...");
         await producer.sendBatch(batch);
     }
     
