@@ -38,7 +38,7 @@ module.exports = async function (context, myTimer) {
 
 	// Waiting long enough before closing the sender to send messages
 	await delay(5000);
-    if (batch.count() > 0){
+    if (batch.count > 0){
         context.log('Sending Batch...');
         await producer.sendBatch(batch);
     }
