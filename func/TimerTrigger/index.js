@@ -3,7 +3,7 @@ const { EventHubProducerClient } = require("@azure/event-hubs");
 const { DefaultAzureCredential } = require("@azure/identity");
 
 const fullyQualifiedNamespace = process.env.SERVICE_BUS_NAMESPACE__fullyQualifiedNamespace;
-const ehFullyQualifiedNamespace = EVENT_HUB_NAMESPACE__fullyQualifiedNamespace;
+const ehFullyQualifiedNamespace = process.env.EVENT_HUB_NAMESPACE__fullyQualifiedNamespace;
 const credential = new DefaultAzureCredential();
 const topicName = process.env.TOPIC_NAME;
 const eventHubName = "funceventhub";
@@ -17,7 +17,7 @@ module.exports = async function (context, myTimer) {
     }
     context.log('JavaScript timer trigger function ran!', timeStamp);   
     const sbClient = new ServiceBusClient(fullyQualifiedNamespace, credential);
-    const producer = new EventHubProducerClient(fullyQualifiedNamespace, eventHubName, credential);
+    const producer = new EventHubProducerClient(ehFullyQualifiedNamespace, eventHubName, credential);
 
     const receiver = sbClient.createReceiver(topicName, "subfuncservicebustopic");
 
