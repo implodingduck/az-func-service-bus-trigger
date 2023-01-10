@@ -1,4 +1,4 @@
-const { ServiceBusClient } = require("@azure/service-bus");
+const { delay, ServiceBusClient } = require("@azure/service-bus");
 const { DefaultAzureCredential } = require("@azure/identity");
 
 const fullyQualifiedNamespace = process.env.SERVICE_BUS_NAMESPACE__fullyQualifiedNamespace;
