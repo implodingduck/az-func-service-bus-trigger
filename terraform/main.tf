@@ -79,7 +79,7 @@ resource "azurerm_servicebus_subscription" "sub" {
   max_delivery_count = 1
 }
 
-resource "azurerm_servicebus_subscription" "sub" {
+resource "azurerm_servicebus_subscription" "sub2" {
   name               = "subfuncservicebustopic2"
   topic_id           = azurerm_servicebus_topic.topic.id
   max_delivery_count = 1
