@@ -28,41 +28,46 @@ module.exports = async function (context, myTimer) {
     const receiver = sbClient.createReceiver(topicName, "subfuncservicebustopic");
     context.log('sb receiver created');
     
-    //event hub client to produce messages
-    const batch = await producer.createBatch();
-    context.log('eh batch producer created');
+    try{
+        //event hub client to produce messages
+        const batch = await producer.createBatch();
+        context.log('eh batch producer created');
 
-    //message handler for incoming service bus events
-    const myMessageHandler = async (messageReceived) => {
-		context.log(`Received message: ${messageReceived.body}`);
-        batch.tryAdd({ body: `From TimerTrigger: ${messageReceived.body} (${timeStamp})` });
-    };
+        //message handler for incoming service bus events
+        const myMessageHandler = async (messageReceived) => {
+            context.log(`Received message: ${messageReceived.body}`);
+            batch.tryAdd({ body: `From TimerTrigger: ${messageReceived.body} (${timeStamp})` });
+        };
 
-    //error handler for service bus
-    const myErrorHandler = async (error) => {
-		context.log(error);
-	};
+        //error handler for service bus
+        const myErrorHandler = async (error) => {
+            context.log(error);
+        };
 
-    //configure handlers to the service bus receiver
-    receiver.subscribe({
-		processMessage: myMessageHandler,
-		processError: myErrorHandler
-	});
-    context.log("sb subscribe defined")
+        //configure handlers to the service bus receiver
+        receiver.subscribe({
+            processMessage: myMessageHandler,
+            processError: myErrorHandler
+        });
+        context.log("sb subscribe defined")
 
-    context.log("waiting 5000ms...")
-	// Waiting to get messages
-	await delay(5000);
+        context.log("waiting 5000ms...")
+        // Waiting to get messages
+        await delay(5000);
 
-    context.log(`Batch count... ${batch.count}`)
-    //if we added messages send them to event hub
-    if (batch.count > 0){
-        context.log("Sending Batch...");
-        await producer.sendBatch(batch);
+        context.log(`Batch count... ${batch.count}`)
+        //if we added messages send them to event hub
+        if (batch.count > 0){
+            context.log("Sending Batch...");
+            await producer.sendBatch(batch);
+        }
+    } catch(e){
+        context.log(e);
+    } finally{
+        //close everything out
+        await receiver.close();	
+        await sbClient.close();
+        await producer.close();
     }
-    
-    //close everything out
-	await receiver.close();	
-	await sbClient.close();
-    await producer.close();
+   
 };
