@@ -144,8 +144,8 @@ resource "azurerm_linux_function_app" "func" {
     "SCM_DO_BUILD_DURING_DEPLOYMENT"                 = "1"
     "BUILD_FLAGS"                                    = "UseExpressBuild"
     "ENABLE_ORYX_BUILD"                              = "true"
-    "XDG_CACHE_HOME"                                 = "/tmp/.cache"
-    "FUNC_TYPE"                                      = "USELOCAL"
+    "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING"       = azurerm_storage_account.sa.primary_connection_string
+    "WEBSITE_CONTENTSHARE"                           = "${local.func_name}"
     "SERVICE_BUS_NAMESPACE__fullyQualifiedNamespace" = "sbn-${local.gh_repo}-${random_string.unique.result}.servicebus.windows.net"
     "TOPIC_NAME"                                     = "funcservicebustopic"
     "EVENT_HUB_NAMESPACE__fullyQualifiedNamespace"   = "eh-${local.gh_repo}-${random_string.unique.result}.servicebus.windows.net"
