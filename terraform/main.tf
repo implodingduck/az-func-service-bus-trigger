@@ -79,6 +79,12 @@ resource "azurerm_servicebus_subscription" "sub" {
   max_delivery_count = 1
 }
 
+resource "azurerm_servicebus_subscription" "sub" {
+  name               = "subfuncservicebustopic2"
+  topic_id           = azurerm_servicebus_topic.topic.id
+  max_delivery_count = 1
+}
+
 resource "azurerm_eventhub_namespace" "ehn" {
   name                = "ehn-${local.gh_repo}-${random_string.unique.result}"
   location            = azurerm_resource_group.rg.location
@@ -90,7 +96,7 @@ resource "azurerm_eventhub_namespace" "ehn" {
 }
 
 resource "azurerm_eventhub" "eh" {
-  name                = "eh-${local.gh_repo}-${random_string.unique.result}"
+  name                = "funceventhub"
   namespace_name      = azurerm_eventhub_namespace.ehn.name
   resource_group_name = azurerm_resource_group.rg.name
   partition_count     = 2
@@ -147,7 +153,7 @@ resource "azurerm_linux_function_app" "func" {
     "WEBSITE_CONTENTSHARE"                           = "${local.func_name}"
     "SERVICE_BUS_NAMESPACE__fullyQualifiedNamespace" = "sb-${local.gh_repo}-${random_string.unique.result}.servicebus.windows.net"
     "TOPIC_NAME"                                     = "funcservicebustopic"
-    "EVENT_HUB_NAMESPACE__fullyQualifiedNamespace"   = "eh-${local.gh_repo}-${random_string.unique.result}.servicebus.windows.net"
+    "EVENT_HUB_NAMESPACE__fullyQualifiedNamespace"   = "ehn-${local.gh_repo}-${random_string.unique.result}.servicebus.windows.net"
   }
   identity {
     type = "SystemAssigned"

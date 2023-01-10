@@ -1,0 +1,19 @@
+{
+  "bindings": [
+    {
+      "name": "mySbMsg",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "topicName": "funcservicebustopic",
+      "subscriptionName": "subfuncservicebustopic2",
+      "connection": "SERVICE_BUS_NAMESPACE"
+    },
+    {
+      "type": "eventHub",
+      "name": "outputEventHubMessage",
+      "eventHubName": "funceventhub",
+      "connection": "EVENT_HUB_NAMESPACE",
+      "direction": "out"
+  }
+  ]
+}
