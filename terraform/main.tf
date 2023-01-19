@@ -139,6 +139,7 @@ resource "azurerm_linux_function_app" "func" {
 
   site_config {
     application_insights_key = azurerm_application_insights.app.instrumentation_key
+    always_on                = true
     application_stack {
       node_version = "16"
     }
