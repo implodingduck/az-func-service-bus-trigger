@@ -155,6 +155,9 @@ resource "azurerm_linux_function_app" "func" {
     "SERVICE_BUS_NAMESPACE__fullyQualifiedNamespace" = "sb-${local.gh_repo}-${random_string.unique.result}.servicebus.windows.net"
     "TOPIC_NAME"                                     = "funcservicebustopic"
     "EVENT_HUB_NAMESPACE__fullyQualifiedNamespace"   = "ehn-${local.gh_repo}-${random_string.unique.result}.servicebus.windows.net"
+    "XDG_CACHE_HOME"                                 = "/tmp/.cache"
+    "AzureWebJobs.EventHubTrigger.Disabled"          = "1"
+
   }
   identity {
     type = "SystemAssigned"

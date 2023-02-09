@@ -18,10 +18,16 @@ module.exports = async function (context, req) {
 
     try {
         await sender.sendMessages([
-            { body: responseMessage },
-            { body: responseMessage.replace("Hello", "Hola") },
-            { body: responseMessage.replace("Hello", "Bonjour") },
-            { body: responseMessage.replace("Hello", "Hallo") }
+            // { body: responseMessage },
+            // { body: responseMessage.replace("Hello", "Hola") },
+            // { body: responseMessage.replace("Hello", "Bonjour") },
+            // { body: responseMessage.replace("Hello", "Hallo") }
+            { body: { "company": "Microsoft", "amount": "10" }},
+            { body: { "company": "Microsoft", "amount": "11" }},
+            { body: { "company": "Contoso", "amount": "12" }},
+            { body: { "company": "Contoso", "amount": "24" }},
+            { body: { "company": "Implodingduck Labs", "amount": "7" }},
+            { body: { "company": "Implodingduck Labs", "amount": "20" }},
         ]);
         
         await sender.close();
