@@ -17,7 +17,13 @@ module.exports = async function (context, req) {
     const sender = sbClient.createSender(topicName);
 
     try {
-        await sender.sendMessages({ body: responseMessage });
+        await sender.sendMessages([
+            { body: responseMessage },
+            { body: responseMessage.replace("Hello", "Hola") },
+            { body: responseMessage.replace("Hello", "Bonjour") },
+            { body: responseMessage.replace("Hello", "Hallo") }
+        ]);
+        
         await sender.close();
     }finally {
 		await sbClient.close();
